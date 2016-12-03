@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+
+
+<head>
+  
+
+<title>Srce</title>
+
+  
+<meta charset="utf-8">
+<style type="text/css">
+.srce{
+background-color:#00FF80;
+font-size:50px;
+font-family: Arial;
+color:red;
+text-align:center;
+}
+</style>
+</head>
+
+<body style="margin: 0;">
+
+<div class = "srce">SRCE</div> 
+<script src="three.min.js"></script>
+<script src="OrbitControls.js"></script>
+
+<script>
+ 
+main();
+animacija();
+
+function main() {
+  							 
+	scene = new THREE.Scene();
+      
+	var sirina = window.innerWidth,
+	duzina = window.innerHeight;
+        
+	renderer = new THREE.WebGLRenderer({antialias:true});     
+	renderer.setSize(sirina, duzina);
+	document.body.appendChild(renderer.domElement);
+
+	camera = new THREE.PerspectiveCamera(45, sirina / duzina, 0.1, 20000);     
+	camera.position.set(-300,300,0);  
+	scene.add(camera);
+ 
+	window.addEventListener('resize', function() {
+		var sirina = window.innerWidth,
+		duzina = window.innerHeight;
+		renderer.setSize(sirina, duzina);
+		camera.aspect = sirina / duzina;
+		camera.updateProjectionMatrix();
+      
+	});
+ 							     
+	renderer.setClearColorHex(0x00ff80, 1);
+
+      			  
+	var osvjetljenje = new THREE.PointLight(0xffffff);    
+	osvjetljenje.position.set(-180,280, 50);   
+	scene.add(osvjetljenje);
+
+	var osvjetljenje1 = new THREE.PointLight(0xffffff);     
+	osvjetljenje1.position.set(195,-287,-47);  
+	scene.add(osvjetljenje1);
+	
+	var loader = new THREE.JSONLoader();
+      
+	loader.load( "moje_srce.json", function(geometry, color){
+		var material = new THREE.MeshFaceMaterial(color);
+		mesh = new THREE.Mesh(geometry, material);
+		scene.add(mesh);
+      
+	});
+						     
+	controls = new THREE.OrbitControls(camera, renderer.domElement); 
+}
+
+function animacija() {				     
+	requestAnimationFrame(animacija); 			
+	renderer.render(scene, camera); 
+	controls.update();
+}
+
+  
+</script>
+</body>
+</html>
